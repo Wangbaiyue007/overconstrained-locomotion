@@ -1,0 +1,277 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.054005018118673365 -0.9905145522332724 -0.12635022687799702 2.3406160961117535
+  position -6.957236096845277 3.9388412374957786 -7.480979825768713
+}
+Floor {
+  size 100 100
+  appearance FormedConcrete {
+  }
+}
+DirectionalLight {
+  ambientIntensity 0.5
+  direction -1 -1 1
+  intensity 2
+}
+DirectionalLight {
+  direction 1 -1 -1
+}
+DEF monopod Robot {
+  translation 0 1.1 0
+  children [
+    Transform {
+      rotation 0 1 0 1.571
+      children [
+        DEF restriction Transform {
+          translation 0 0.1 0.25
+          rotation 1 0 0 0.1
+          children [
+            Solid {
+              children [
+                Transform {
+                  translation 0 0 5
+                  rotation 1 0 0 -0.1
+                  children [
+                    Hinge2Joint {
+                      jointParameters HingeJointParameters {
+                      }
+                      jointParameters2 JointParameters {
+                        axis 0 1 0
+                      }
+                      endPoint Solid {
+                        children [
+                          Transform {
+                            translation 0 -0.35 0
+                            children [
+                              DEF stick2 Shape {
+                                appearance OldSteel {
+                                }
+                                geometry Cylinder {
+                                  height 0.7
+                                  radius 0.3
+                                }
+                                isPickable FALSE
+                              }
+                            ]
+                          }
+                        ]
+                        boundingObject Transform {
+                          translation 0 -0.35 0
+                          children [
+                            USE stick2
+                          ]
+                        }
+                        physics Physics {
+                          density -1
+                          mass 200
+                        }
+                      }
+                    }
+                  ]
+                }
+                DEF stick1 Transform {
+                  translation 0 0 2.5
+                  rotation 1 0 0 1.571
+                  children [
+                    DEF stick1 Shape {
+                      appearance OldSteel {
+                      }
+                      geometry Cylinder {
+                        height 5
+                        radius 0.03
+                      }
+                    }
+                  ]
+                }
+              ]
+              boundingObject Transform {
+                translation 0 0 2.5
+                rotation 1 0 0 1.571
+                children [
+                  USE stick1
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.1
+              }
+            }
+          ]
+        }
+      ]
+    }
+    InertialUnit {
+    }
+    DEF joint1 Transform {
+      translation 0 -0.1 -0.05
+      rotation 1 0 0 -1
+      children [
+        DEF joint_l_1 HingeJoint {
+          jointParameters HingeJointParameters {
+            axis 0 1 0
+          }
+          device [
+            DEF sensor1 PositionSensor {
+              name "sensor1"
+            }
+            DEF motor1 RotationalMotor {
+              name "motor1"
+              minPosition -1
+              maxPosition 1
+              maxTorque 400
+            }
+          ]
+          endPoint Solid {
+            children [
+              DEF joint_l_1 Shape {
+                appearance MattePaint {
+                  baseColor 1 0.1 0.1
+                }
+                geometry Cylinder {
+                  height 0.05
+                  radius 0.03
+                }
+              }
+              DEF joint2 Transform {
+                translation 0 0 -0.5
+                rotation 0 0 1 1
+                children [
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0 1 0
+                    }
+                    device [
+                      PositionSensor {
+                        name "sensor2"
+                      }
+                      RotationalMotor {
+                        name "motor2"
+                        maxPosition 1.5
+                        maxTorque 400
+                      }
+                    ]
+                    endPoint Solid {
+                      children [
+                        DEF joint_l_2 Shape {
+                          appearance MattePaint {
+                            baseColor 1 0.2 0.2
+                          }
+                          geometry Cylinder {
+                            height 0.05
+                            radius 0.03
+                          }
+                        }
+                        Transform {
+                          translation 0 0 -0.5
+                          children [
+                            DEF endpoint Shape {
+                              appearance CorrodedMetal {
+                              }
+                              geometry Sphere {
+                                radius 0.03
+                              }
+                            }
+                            TouchSensor {
+                              boundingObject USE endpoint
+                            }
+                            Solid {
+                              boundingObject USE endpoint
+                              physics Physics {
+                                density -1
+                                mass 0.01
+                              }
+                            }
+                          ]
+                        }
+                        Transform {
+                          translation 0 0 -0.25
+                          rotation 1 0 0 1.571
+                          children [
+                            DEF leg_l_2 Shape {
+                              appearance MattePaint {
+                                baseColor 0.2 0.3 1
+                              }
+                              geometry Cylinder {
+                                height 0.5
+                                radius 0.025
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                      boundingObject Group {
+                        children [
+                          USE joint_l_2
+                          Transform {
+                            translation 0 0 -0.25
+                            rotation 1 0 0 1.571
+                            children [
+                              USE leg_l_2
+                            ]
+                          }
+                        ]
+                      }
+                      physics Physics {
+                        density -1
+                        mass 1
+                      }
+                    }
+                  }
+                ]
+              }
+              DEF leg1 Transform {
+                translation 0 0 -0.25
+                rotation 1 0 0 1.571
+                children [
+                  DEF leg_l_1 Shape {
+                    appearance MattePaint {
+                      baseColor 0.2 0.3 1
+                    }
+                    geometry Cylinder {
+                      height 0.5
+                      radius 0.025
+                    }
+                  }
+                ]
+              }
+            ]
+            name "joint_l_1"
+            boundingObject Group {
+              children [
+                USE joint_l_1
+                Transform {
+                  translation 0 0 -0.25
+                  rotation 1 0 0 1.57
+                  children [
+                    USE leg_l_1
+                  ]
+                }
+              ]
+            }
+            physics Physics {
+              density -1
+              mass 1
+            }
+          }
+        }
+      ]
+    }
+    DEF body Shape {
+      appearance MattePaint {
+        baseColor 0.2 0.6 1
+      }
+      geometry Box {
+        size 0.5 0.5 0.1
+      }
+    }
+  ]
+  name "monopod"
+  boundingObject USE body
+  physics Physics {
+    density -1
+    mass 5
+  }
+  controller "monopod_lateral"
+}
